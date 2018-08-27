@@ -65,6 +65,6 @@ public class USGSService extends AsyncTask<Void,Void,Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        MainActivity.list.setAdapter(new ArrayAdapter<Quake>(context, android.R.layout.simple_list_item_1, quakes));
+        MainActivity.list.setAdapter(new QuakeAdapter(context, R.layout.quake_listview, quakes));
     }
 }
