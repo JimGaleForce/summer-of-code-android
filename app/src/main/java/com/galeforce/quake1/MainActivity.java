@@ -1,6 +1,9 @@
 package com.galeforce.quake1;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static ListView list;
     private Context context = this;
+    private USGSService usgs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +30,24 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         list = findViewById(R.id.list);
+        list.setOnItemClickListener( new ListView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String urlString=usgs.quakes.get(i).url;
+
+                Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setPackage("com.microsoft.emmx");
+                try {
+                    context.startActivity(intent);
+                } catch (ActivityNotFoundException ex) {
+                    // Chrome browser presumably not installed so allow user to choose instead
+                    intent.setPackage(null);
+                    context.startActivity(intent);
+                }
+            }
+        } );
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -33,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Loading", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                USGSService usgs = new USGSService(context);
+                usgs = new USGSService(context);
                 usgs.execute();
             }
         });
