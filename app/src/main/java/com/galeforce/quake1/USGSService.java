@@ -21,7 +21,7 @@ import java.util.List;
 public class USGSService extends AsyncTask<Void,Void,Void> {
 
     StringBuffer data = new StringBuffer();
-    List<String> quakes = new ArrayList<String>();
+    List<Quake> quakes = new ArrayList<Quake>();
     Context context;
 
     public USGSService(Context context) {
@@ -47,7 +47,7 @@ public class USGSService extends AsyncTask<Void,Void,Void> {
             JSONArray features = top.getJSONArray("features");
             for(int i=0;i<features.length();i++) {
                 JSONObject quake = ((JSONObject) features.get(i)).getJSONObject("properties");
-                quakes.add(quake.getString("title"));
+                quakes.add(new Quake(quake.getString("title"), quake.getString("url")));
             }
 
         } catch (MalformedURLException e) {
@@ -65,6 +65,6 @@ public class USGSService extends AsyncTask<Void,Void,Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        MainActivity.list.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, quakes));
+        MainActivity.list.setAdapter(new ArrayAdapter<Quake>(context, android.R.layout.simple_list_item_1, quakes));
     }
 }
