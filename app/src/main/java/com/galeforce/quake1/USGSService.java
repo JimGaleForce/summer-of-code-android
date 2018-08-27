@@ -35,4 +35,11 @@ public class USGSService extends AsyncTask<Void,Void,Void> {
 
         return null;
     }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+
+        MainActivity.txt.setText(data.toString());
+    }
 }
