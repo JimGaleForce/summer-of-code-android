@@ -1,6 +1,8 @@
 package com.galeforce.quake1;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.ArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,11 +15,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class USGSService extends AsyncTask<Void,Void,Void> {
 
     StringBuffer data = new StringBuffer();
-    String result = "";
+    List<String> quakes = new ArrayList<String>();
+    Context context;
+
+    public USGSService(Context context) {
+        this.context = context;
+    }
 
     @Override
     protected Void doInBackground(Void... voids) {
@@ -38,7 +47,7 @@ public class USGSService extends AsyncTask<Void,Void,Void> {
             JSONArray features = top.getJSONArray("features");
             for(int i=0;i<features.length();i++) {
                 JSONObject quake = ((JSONObject) features.get(i)).getJSONObject("properties");
-                result += quake.getString("title")+"\r\n";
+                quakes.add(quake.getString("title"));
             }
 
         } catch (MalformedURLException e) {
@@ -56,6 +65,6 @@ public class USGSService extends AsyncTask<Void,Void,Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        MainActivity.txt.setText(result);
+        MainActivity.list.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, quakes));
     }
 }

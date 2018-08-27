@@ -1,5 +1,6 @@
 package com.galeforce.quake1;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,11 +9,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static TextView txt;
+    public static ListView list;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        txt = findViewById(R.id.txt);
+        list = findViewById(R.id.list);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Loading", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                USGSService usgs = new USGSService();
+                USGSService usgs = new USGSService(context);
                 usgs.execute();
             }
         });
