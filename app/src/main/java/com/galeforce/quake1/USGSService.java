@@ -2,6 +2,10 @@ package com.galeforce.quake1;
 
 import android.os.AsyncTask;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +17,7 @@ import java.net.URL;
 public class USGSService extends AsyncTask<Void,Void,Void> {
 
     StringBuffer data = new StringBuffer();
+    String result = "";
 
     @Override
     protected Void doInBackground(Void... voids) {
@@ -27,9 +32,20 @@ public class USGSService extends AsyncTask<Void,Void,Void> {
                 line = reader.readLine();
                 data.append(line);
             }
+
+            JSONObject top = new JSONObject(data.toString());
+
+            JSONArray features = top.getJSONArray("features");
+            for(int i=0;i<features.length();i++) {
+                JSONObject quake = ((JSONObject) features.get(i)).getJSONObject("properties");
+                result += quake.getString("title")+"\r\n";
+            }
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -40,6 +56,6 @@ public class USGSService extends AsyncTask<Void,Void,Void> {
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        MainActivity.txt.setText(data.toString());
+        MainActivity.txt.setText(result);
     }
 }
