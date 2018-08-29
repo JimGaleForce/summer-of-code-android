@@ -1,4 +1,4 @@
-package com.galeforce.quake1;
+package com.galeforce.quake2;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

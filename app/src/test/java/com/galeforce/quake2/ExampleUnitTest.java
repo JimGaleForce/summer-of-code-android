@@ -1,4 +1,4 @@
-package com.galeforce.quake1;
+package com.galeforce.quake2;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.galeforce.quake1;
+package com.galeforce.quake2;
 
 public class Quake {
     public String title;

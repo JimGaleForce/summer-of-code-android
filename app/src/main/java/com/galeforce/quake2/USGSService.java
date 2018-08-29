@@ -1,8 +1,7 @@
-package com.galeforce.quake1;
+package com.galeforce.quake2;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.ArrayAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
